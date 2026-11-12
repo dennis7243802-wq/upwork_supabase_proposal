@@ -42,7 +42,6 @@ with st.sidebar:
       value=st.secrets.get("SUPABASE_KEY", ""),
       type="password",
   )
-=======
   gemini_api_key = st.text_input("Gemini API Key", type="password")
   supabase_url = st.text_input("Supabase URL", value="")
   supabase_key = st.text_input("Supabase Anon Key", type="password")
