@@ -9,14 +9,13 @@ from supabase import create_client
 # ==========================================
 # 1. Page Configuration & Setup
 # ==========================================
-st.set_page_config(
-    page_title="Upwork Demo", layout="wide"
-)
+st.set_page_config(page_title="Upwork Demo", layout="wide")
 
 st.title("🔬 Research Workflow AI Automation - Proposal Demo")
 st.markdown(
     "This demo showcases how unstructured research evidence is extracted "
-    "into structured values using Gemini, reviewed/edited by a human, and saved to Supabase with evidence linkage."
+    "into structured values using Gemini, reviewed/edited by a human, and saved"
+    " to Supabase with evidence linkage."
 )
 
 # ==========================================
@@ -24,27 +23,25 @@ st.markdown(
 # ==========================================
 with st.sidebar:
   st.header("⚙️ System Configuration")
-  '''
-  gemini_api_key = st.text_input("Gemini API Key", type="password")
-  supabase_url = st.text_input("Supabase URL", value="")
-  supabase_key = st.text_input("Supabase Anon Key", type="password")
-  '''
+
+  # 優先從 st.secrets 讀取雲端設定，若無則預設為空字串
+  default_gemini_key = (
+      st.secrets["GEMINI_API_KEY"] if "GEMINI_API_KEY" in st.secrets else ""
+  )
+  default_supabase_url = (
+      st.secrets["SUPABASE_URL"] if "SUPABASE_URL" in st.secrets else ""
+  )
+  default_supabase_key = (
+      st.secrets["SUPABASE_KEY"] if "SUPABASE_KEY" in st.secrets else ""
+  )
+
   gemini_api_key = st.text_input(
-      "Gemini API Key",
-      value=st.secrets.get("GEMINI_API_KEY", ""),
-      type="password",
+      "Gemini API Key", value=default_gemini_key, type="password"
   )
-  supabase_url = st.text_input(
-      "Supabase URL", value=st.secrets.get("SUPABASE_URL", "")
-  )
+  supabase_url = st.text_input("Supabase URL", value=default_supabase_url)
   supabase_key = st.text_input(
-      "Supabase Anon Key",
-      value=st.secrets.get("SUPABASE_KEY", ""),
-      type="password",
+      "Supabase Anon Key", value=default_supabase_key, type="password"
   )
-  gemini_api_key = st.text_input("Gemini API Key", type="password")
-  supabase_url = st.text_input("Supabase URL", value="")
-  supabase_key = st.text_input("Supabase Anon Key", type="password")
 
   st.markdown("---")
   st.markdown("### 📥 Test Sample Evidence")
@@ -64,13 +61,19 @@ with st.sidebar:
 # ==========================================
 class ResearchExtractionSchema(BaseModel):
   field_name: str = Field(
-      description="The structured field name extracted (e.g., Total Revenue, YoY Growth Rate)"
+      description=(
+          "The structured field name extracted (e.g., Total Revenue, YoY Growth"
+          " Rate)"
+      )
   )
   extracted_value: str = Field(
       description="The structured value or key conclusion extracted by AI"
   )
   evidence_snippet: str = Field(
-      description="The exact verbatim text snippet from the source document supporting this conclusion"
+      description=(
+          "The exact verbatim text snippet from the source document supporting"
+          " this conclusion"
+      )
   )
   confidence_score: float = Field(
       description="AI confidence score for this extraction ranging from 0.0 to 1.0"
@@ -96,7 +99,7 @@ with col1:
     # check Gemini key
     if not gemini_api_key:
       st.error("Please enter your Gemini API Key in the sidebar first!")
-    # check empty text 
+    # check empty text
     elif not sample_input_text.strip():
       st.error(
           "Please enter or paste some source evidence text before running"
@@ -104,7 +107,9 @@ with col1:
       )
     else:
       try:
-        with st.spinner("Analyzing evidence and extracting structured fields..."):
+        with st.spinner(
+            "Analyzing evidence and extracting structured fields..."
+        ):
           # Initialize Google GenAI client with official SDK
           client = genai.Client(api_key=gemini_api_key)
 
@@ -146,7 +151,9 @@ with col2:
           " necessary before saving:"
       )
 
-      revised_field_name = st.text_input("Field Name", value=res.get("field_name", ""))
+      revised_field_name = st.text_input(
+          "Field Name", value=res.get("field_name", "")
+      )
       revised_value = st.text_input(
           "Extracted Value / Conclusion", value=res.get("extracted_value", "")
       )
@@ -201,6 +208,6 @@ st.markdown("""
 1. Save this script as `app.py`.
 2. Install dependencies: `pip install streamlit google-genai pydantic supabase`
 3. Run the app in your terminal: `streamlit run app.py`
-4. Enter your **Gemini API Key** and **Supabase credentials** in the sidebar.
+4. Enter your **Gemini API Key** and **Supabase credentials** in the sidebar. (I pre-fill my keys for your convenience)
 5. Click **Run AI Extraction**, review or edit the fields on the right, and click **Approve & Save to Supabase** to complete the pipeline demo!
 """)
