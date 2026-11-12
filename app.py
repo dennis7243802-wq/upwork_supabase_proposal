@@ -24,23 +24,49 @@ st.markdown(
 with st.sidebar:
   st.header("⚙️ System Configuration")
 
-  # 優先從 st.secrets 讀取雲端設定，若無則預設為空字串
-  default_gemini_key = (
-      st.secrets["GEMINI_API_KEY"] if "GEMINI_API_KEY" in st.secrets else ""
+  # 檢查是否已在 st.secrets 設定，若有則顯示安全提示，輸入框預設保持空白並顯示 *******
+  has_gemini_secret = "GEMINI_API_KEY" in st.secrets
+  has_supabase_url_secret = "SUPABASE_URL" in st.secrets
+  has_supabase_key_secret = "SUPABASE_KEY" in st.secrets
+
+  if has_gemini_secret:
+    st.info("🔒 Gemini API Key 已透過 st.secrets 安全保護")
+  gemini_input = st.text_input(
+      "Gemini API Key",
+      type="password",
+      placeholder="*******" if has_gemini_secret else "請輸入 Gemini API Key",
   )
-  default_supabase_url = (
-      st.secrets["SUPABASE_URL"] if "SUPABASE_URL" in st.secrets else ""
-  )
-  default_supabase_key = (
-      st.secrets["SUPABASE_KEY"] if "SUPABASE_KEY" in st.secrets else ""
+  # 若未手動輸入則自動從 st.secrets 帶入背景使用
+  gemini_api_key = (
+      gemini_input if gemini_input else st.secrets.get("GEMINI_API_KEY", "")
   )
 
-  gemini_api_key = st.text_input(
-      "Gemini API Key", value=default_gemini_key, type="password"
+  if has_supabase_url_secret:
+    st.info("🔒 Supabase URL 已透過 st.secrets 安全保護")
+  supabase_url_input = st.text_input(
+      "Supabase URL",
+      value="",
+      placeholder=(
+          "*******" if has_supabase_url_secret else "https://xxx.supabase.co"
+      ),
   )
-  supabase_url = st.text_input("Supabase URL", value=default_supabase_url)
-  supabase_key = st.text_input(
-      "Supabase Anon Key", value=default_supabase_key, type="password"
+  supabase_url = (
+      supabase_url_input
+      if supabase_url_input
+      else st.secrets.get("SUPABASE_URL", "")
+  )
+
+  if has_supabase_key_secret:
+    st.info("🔒 Supabase Anon Key 已透過 st.secrets 安全保護")
+  supabase_key_input = st.text_input(
+      "Supabase Anon Key",
+      type="password",
+      placeholder="*******" if has_supabase_key_secret else "請輸入 Anon Key",
+  )
+  supabase_key = (
+      supabase_key_input
+      if supabase_key_input
+      else st.secrets.get("SUPABASE_KEY", "")
   )
 
   st.markdown("---")
@@ -208,6 +234,6 @@ st.markdown("""
 1. Save this script as `app.py`.
 2. Install dependencies: `pip install streamlit google-genai pydantic supabase`
 3. Run the app in your terminal: `streamlit run app.py`
-4. Enter your **Gemini API Key** and **Supabase credentials** in the sidebar. (I pre-fill my keys for your convenience)
+4. Enter your **Gemini API Key** and **Supabase credentials** in the sidebar.
 5. Click **Run AI Extraction**, review or edit the fields on the right, and click **Approve & Save to Supabase** to complete the pipeline demo!
 """)
