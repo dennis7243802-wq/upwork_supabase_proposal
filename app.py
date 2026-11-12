@@ -14,8 +14,8 @@ st.set_page_config(page_title="Upwork Demo", layout="wide")
 st.title("🔬 Research Workflow AI Automation - Proposal Demo")
 st.markdown(
     "This demo showcases how unstructured research evidence is extracted "
-    "into structured values using Gemini, reviewed/edited by a human, and saved"
-    " to Supabase with evidence linkage."
+    "into structured values using Gemini, reviewed/edited by a human, and saved "
+    "to Supabase with evidence linkage."
 )
 
 # ==========================================
@@ -24,25 +24,24 @@ st.markdown(
 with st.sidebar:
   st.header("⚙️ System Configuration")
 
-  # 檢查是否已在 st.secrets 設定，若有則顯示安全提示，輸入框預設保持空白並顯示 *******
+  # Check if credentials exist in st.secrets and handle secure input masking
   has_gemini_secret = "GEMINI_API_KEY" in st.secrets
   has_supabase_url_secret = "SUPABASE_URL" in st.secrets
   has_supabase_key_secret = "SUPABASE_KEY" in st.secrets
 
   if has_gemini_secret:
-    st.info("🔒 Gemini API Key 已透過 st.secrets 安全保護")
+    st.info("🔒 Gemini API Key secured via st.secrets")
   gemini_input = st.text_input(
       "Gemini API Key",
       type="password",
-      placeholder="*******" if has_gemini_secret else "請輸入 Gemini API Key",
+      placeholder="*******" if has_gemini_secret else "Enter Gemini API Key",
   )
-  # 若未手動輸入則自動從 st.secrets 帶入背景使用
   gemini_api_key = (
       gemini_input if gemini_input else st.secrets.get("GEMINI_API_KEY", "")
   )
 
   if has_supabase_url_secret:
-    st.info("🔒 Supabase URL 已透過 st.secrets 安全保護")
+    st.info("🔒 Supabase URL secured via st.secrets")
   supabase_url_input = st.text_input(
       "Supabase URL",
       value="",
@@ -57,11 +56,11 @@ with st.sidebar:
   )
 
   if has_supabase_key_secret:
-    st.info("🔒 Supabase Anon Key 已透過 st.secrets 安全保護")
+    st.info("🔒 Supabase Anon Key secured via st.secrets")
   supabase_key_input = st.text_input(
       "Supabase Anon Key",
       type="password",
-      placeholder="*******" if has_supabase_key_secret else "請輸入 Anon Key",
+      placeholder="*******" if has_supabase_key_secret else "Enter Anon Key",
   )
   supabase_key = (
       supabase_key_input
@@ -122,10 +121,10 @@ with col1:
   run_button = st.button("🚀 Run AI Extraction", type="primary")
 
   if run_button:
-    # check Gemini key
+    # Validate Gemini API key
     if not gemini_api_key:
       st.error("Please enter your Gemini API Key in the sidebar first!")
-    # check empty text
+    # Validate source text
     elif not sample_input_text.strip():
       st.error(
           "Please enter or paste some source evidence text before running"
