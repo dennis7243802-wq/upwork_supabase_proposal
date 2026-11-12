@@ -228,11 +228,11 @@ with col2:
 # 5. Local Execution Instructions
 # ==========================================
 st.markdown("---")
-st.markdown("### 📖 Local Execution Guide")
+st.markdown("### 📖 DEMO Guide")
 st.markdown("""
-1. Save this script as `app.py`.
-2. Install dependencies: `pip install streamlit google-genai pydantic supabase`
-3. Run the app in your terminal: `streamlit run app.py`
-4. Enter your **Gemini API Key** and **Supabase credentials** in the sidebar.
-5. Click **Run AI Extraction**, review or edit the fields on the right, and click **Approve & Save to Supabase** to complete the pipeline demo!
+1. Link to this URL: https://upworksupabaseproposal-zyvgsnrjfv5rhvpdaq7ngt.streamlit.app/
+2. Enter your **Gemini API Key** and **Supabase credentials** in the sidebar. (I pre-fill keys for your convenience)
+3. Fill the plain text you want to check.
+4. Click "Run AI Extraction" button, review or edit the fields on the right, and click "Approve & Save to Supabase" to complete the DEMO!
+5. Please do not safe large data in my DEMO database, thank you!
 """)
