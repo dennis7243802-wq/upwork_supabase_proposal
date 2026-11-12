@@ -234,5 +234,5 @@ st.markdown("""
 2. Enter your **Gemini API Key** and **Supabase credentials** in the sidebar. (I pre-fill keys for your convenience)
 3. Fill the plain text you want to check.
 4. Click "Run AI Extraction" button, review or edit the fields on the right, and click "Approve & Save to Supabase" to complete the DEMO!
-5. Please do not safe large data in my DEMO database, thank you!
+5. Please do not save large data in my DEMO database, thank you!
 """)
