@@ -24,7 +24,6 @@ st.markdown(
 # ==========================================
 with st.sidebar:
   st.header("⚙️ System Configuration")
-<<<<<<< HEAD
   '''
   gemini_api_key = st.text_input("Gemini API Key", type="password")
   supabase_url = st.text_input("Supabase URL", value="")
